@@ -1,6 +1,6 @@
 ######################################################
 ########### R codes attached to article ##############
-#### Application of machine learning algorithms for###
+#### Comparison of machine learning algorithms for###
 ########## predicting the survial of #################
 ###########oral and pharyngeal cancers ###############
 ######################################################
@@ -178,9 +178,15 @@ threedata_MI <- randomForestSRC::impute.rfsrc(f, data=threedata_full,
                                               na.action='na.impute',
                                               nimpute = 5)
 
-# to develop cox/tree/Rf in MI data for three year cohort, we need to
-# replace complete cases with imputed data.
-
+## impute missing data for three year cohort using smcfcs ##
+library(smcfcs)
+threedata_smcfcs<-smcfcs(threedata_full, smtype = 'coxph',
+                         smformula = "Surv(Survival_m,Three_y_Death)~ Age+Sex+Race+Marital_s
+                         +Grade+T_n+N_n+M_n+Stage+LN_r+TS_n+Surgery+ICD_n",
+                         method = c('','','','','mlogit','mlogit',
+                                    'podds','podds','podds','podds','podds',
+                                    'mlogit','podds','mlogit','mlogit'),
+                         m=5,numit = 5) 
 
 
 ############pec###############
